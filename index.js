@@ -1,4 +1,5 @@
-const fs = require('fs');
+import express from 'express';
+import fs from 'fs';
 
 class ProductManager {
     constructor() {
@@ -102,16 +103,54 @@ class ProductManager {
 
 const productManager = new ProductManager();
 
-productManager.addProduct("Televisor", "Televisor 42", 120000, "foto_tv.jpg", "779487804801547", 10);
-productManager.addProduct("Lavarropas", "Lavarropas vertical", 80000, "foto2.jpg", "77987098451235", 50);
-productManager.addProduct("Microondas", "Microondas", 94999, "foto3.jpg", "77911198451322", 5);
+productManager.addProduct("Televisor", "Samsung 43 Neo", 549999, "foto_tv.jpg", "MLA19787254", 10);
+productManager.addProduct("Lavarropas", "Lavarropas Horizontal Whirlpool", 534699, "foto2.jpg", "MLA26951442", 50);
+productManager.addProduct("Microondas", "Microondas Atma", 72999, "foto3.jpg", "MLA8376814", 5);
+productManager.addProduct("Aire Acondicioando", "Split frio/calor", 459999, "split.jpg", "MLA16212559", 15);
 
-// console.log(productManager.getMaxId());
 
-// console.log(productManager.getProducts());
-// const producto1 = productManager.getProductById(3);
-// console.log(producto1);
+const app = express();
+app.use(express.urlencoded({ extended: true }));
 
-productManager.updateProductById(1, "Televisor 50", "Televisor más grande", 160000);
-productManager.deleteProduct(2);
+app.get('/', (req, res) => {
+    res.send('Hola!');
+});
+
+app.get('/products', (req, res) => {
+    const { limit } = req.query;
+
+    if (limit === undefined) {
+        res.status(200).json(productManager.getProducts());
+    }
+    else {
+        let productos = productManager.getProducts();
+
+        while (productos.length > parseInt(limit)) {
+            productos.pop();
+        }
+
+        res.status(200).json(productos);
+    }
+});
+
+
+
+app.get('/products/:pid', (req, res) => {
+    const { pid } = req.params;
+    const productIdDeseado = parseInt(pid);
+
+    let producto = productManager.getProductById(productIdDeseado);
+    if (producto) {
+        res.status(200).json(producto);
+    }
+    else {
+        res.status(404).send(`El producto con ID ${productIdDeseado} no existe.`);
+    }
+});
+
+const PORT = 8080;
+app.listen(PORT, () => { console.log("server iniciado") });
+
+
+
 
