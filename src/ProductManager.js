@@ -69,22 +69,21 @@ export class ProductManager {
         return maxId;
     }
 
-    getProductById(id) {
-        const productosTodos = this.getProducts();
+    async getProductById(id) {
+        const productosTodos = await this.getProducts();
         const product = productosTodos.find(p => p.id === id);
 
-        if (product) {
-            return product;
-        } else {
+        if (!product) {
             console.log("Error: Producto no encontrado.");
-            return null;
         }
+        return product;
     }
 
-    updateProductById(id, title, description, price, thumbnail, code, stock) {
-        let product = this.getProductById(id);
+
+    async updateProductById(id, title, description, code, price, status, stock, category, thumbnails) {
+        let product = await this.getProductById(id);
         if (!product) {
-            return false;
+            return { error: 'Producto a actualizar no encontrado' };
         }
 
         if (title) {
@@ -94,23 +93,53 @@ export class ProductManager {
         if (description) {
             product.description = description;
         }
+
+        if (code) {
+            product.code = code;
+        }
+
         if (price) {
             product.price = price;
         }
 
+        if (status) {
+            product.status = status;
+        }
+
+        if (stock) {
+            product.stock = stock;
+        }
+
         //Una vez actualizado el producto, lo buscamos en el array para eliminarlo, y lo agregamos con los cambios.
-        let indice = this.getProducts().findIndex(e => e.id === id);
+        // console.log(this.getProducts())
+        let indice = (await this.getProducts()).findIndex(e => e.id === id);
+        console.log(`Indice: ${indice}`)
         this.products.splice(indice, 1);
         this.products.push(product);
 
         this.#saveInFileSystem();
+
+        return (true);
     }
 
-    deleteProduct(id) {
-        let indice = this.getProducts().findIndex(e => e.id === id);
-        this.products.splice(indice, 1);
-        this.#saveInFileSystem();
-
-        return true;
+    async deleteProduct(id) {
+        if (this.products.length === 0) {
+            try {
+                this.products = await JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
+            } catch (error) {
+                this.products = [];
+            }
+        }
+        try {
+            let indice = (await this.getProducts()).findIndex(e => e.id === id);
+            if (indice === -1) {
+                return { error: `Producto a borrar con id: ${id} no encontrado.` };
+            }
+            this.products.splice(indice, 1);
+            this.#saveInFileSystem();
+            return true;
+        } catch (error) {
+            return { error: error };
+        }
     }
 }

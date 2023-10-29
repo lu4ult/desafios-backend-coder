@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/productos', productRouter);
+app.use('/api/productos', productRouter);
 
 app.get('/', (req, res) => {
     res.status(200).send('Hola!');

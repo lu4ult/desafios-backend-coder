@@ -38,8 +38,46 @@ router.post('/', async (req, res) => {
         console.log(error)
         res.status(500).json({ error: error, message: 'Ups! Algo salió mal' });
     }
+});
 
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const idAsInt = parseInt(id);
 
-})
+    if (isNaN(idAsInt)) {
+        return res.status(400).json({ error: 'ID debe ser un número.' });
+    }
 
+    const { title, description, code, price, status, stock, category, thumbnails } = req.body;
+
+    //TODO: ver qué hacer cuando no se especifica algún campo
+    let response = await productManager.updateProductById(idAsInt, title, description, price, thumbnails, code, stock);
+
+    if (response.error) {
+        res.status(400).json(response);
+    }
+    else {
+        res.status(200).send('Actualizado');
+    }
+
+});
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    const idAsInt = parseInt(id);
+
+    if (isNaN(idAsInt)) {
+        return res.status(400).json({ error: 'ID debe ser un número.' });
+    }
+
+    let response = await productManager.deleteProduct(idAsInt);
+
+    if (response.error) {
+        res.status(400).json(response);
+    }
+    else {
+        res.status(200).send('Eliminado');
+    }
+
+});
 export default router;
