@@ -3,6 +3,7 @@ import { ProductManager } from "../ProductManager.js";
 
 
 const productManager = new ProductManager();
+productManager.init();
 const router = Router();
 
 router.get('/', (req, res) => {

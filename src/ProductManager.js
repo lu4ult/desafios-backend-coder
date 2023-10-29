@@ -6,6 +6,19 @@ export class ProductManager {
         this.path = './product-manager.json';
     }
 
+
+    //Para evitar leer el FS constantemente, siempre utilizamos this.products, lo leemos sólo al instanciarlo.
+    async init() {
+        try {
+            this.products = await JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
+
+        }
+        catch (error) {
+            console.log(error)
+        }
+    }
+
+
     //En lugar de verificar si existe el archivo y actualizarlo, decidí seguir usando el this.products y simplemente sobreescribir el archivo completo.
     #saveInFileSystem() {
         fs.writeFileSync(this.path, JSON.stringify(this.products));
@@ -15,10 +28,6 @@ export class ProductManager {
         if (!title || !description || !code || !price || !stock || !category) {
             console.log("Error: Todos los campos son obligatorios.");
             return { error: 'Falta algún campo.' };
-        }
-
-        if (this.products.length === 0) {
-            await this.getProducts();
         }
 
         // if (this.products.find(product => product.code === code)) {
@@ -48,13 +57,6 @@ export class ProductManager {
 
 
     async getProducts() {
-        if (this.products.length === 0) {
-            try {
-                this.products = await JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
-            } catch (error) {
-                this.products = [];
-            }
-        }
         return this.products;
     }
 
@@ -123,13 +125,6 @@ export class ProductManager {
     }
 
     async deleteProduct(id) {
-        if (this.products.length === 0) {
-            try {
-                this.products = await JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
-            } catch (error) {
-                this.products = [];
-            }
-        }
         try {
             let indice = (await this.getProducts()).findIndex(e => e.id === id);
             if (indice === -1) {
