@@ -1,7 +1,6 @@
-import express from 'express';
 import fs from 'fs';
 
-class ProductManager {
+export class ProductManager {
     constructor() {
         this.products = [];
         this.path = './product-manager.json';
@@ -12,36 +11,51 @@ class ProductManager {
         fs.writeFileSync(this.path, JSON.stringify(this.products));
     }
 
-    addProduct(title, description, price, thumbnail, code, stock) {
-        if (!title || !description || !price || !thumbnail || !code || stock === undefined) {
+    async addProduct(title, description, code, price, status, stock, category, thumbnails = []) {
+        if (!title || !description || !code || !price || !stock || !category) {
             console.log("Error: Todos los campos son obligatorios.");
-            return;
+            return { error: 'Falta algún campo.' };
         }
 
-        if (this.products.find(product => product.code === code)) {
-            console.log("Error: El código del producto ya existe.");
-            return;
+        if (this.products.length === 0) {
+            await this.getProducts();
         }
+
+        // if (this.products.find(product => product.code === code)) {
+        //     console.log("Error: El código del producto ya existe.");
+        //     return { error: `Ya se encuentra el producto ${code}` };
+        // }
 
         const product = {
             id: this.#getMaxId() + 1,
             title,
             description,
-            price,
-            thumbnail,
             code,
-            stock
+            price,
+            status,
+            stock,
+            category,
+            thumbnails,
         };
 
-        this.products.push(product);
 
+
+        this.products.push(product);
         this.#saveInFileSystem();
+
+        return { id: product.id };
     }
 
-    getProducts() {
-        // return this.products;
-        let productos = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
-        return productos;
+
+    async getProducts() {
+        if (this.products.length === 0) {
+            try {
+                this.products = await JSON.parse(fs.readFileSync(this.path, 'utf-8')) || [];
+            } catch (error) {
+                this.products = [];
+            }
+        }
+        return this.products;
     }
 
     #getMaxId() {
@@ -100,57 +114,3 @@ class ProductManager {
         return true;
     }
 }
-
-const productManager = new ProductManager();
-
-productManager.addProduct("Televisor", "Samsung 43 Neo", 549999, "foto_tv.jpg", "MLA19787254", 10);
-productManager.addProduct("Lavarropas", "Lavarropas Horizontal Whirlpool", 534699, "foto2.jpg", "MLA26951442", 50);
-productManager.addProduct("Microondas", "Microondas Atma", 72999, "foto3.jpg", "MLA8376814", 5);
-productManager.addProduct("Aire Acondicioando", "Split frio/calor", 459999, "split.jpg", "MLA16212559", 15);
-
-
-const app = express();
-app.use(express.urlencoded({ extended: true }));
-
-app.get('/', (req, res) => {
-    res.send('Hola!');
-});
-
-app.get('/products', (req, res) => {
-    const { limit } = req.query;
-
-    if (limit === undefined) {
-        res.status(200).json(productManager.getProducts());
-    }
-    else {
-        let productos = productManager.getProducts();
-
-        while (productos.length > parseInt(limit)) {
-            productos.pop();
-        }
-
-        res.status(200).json(productos);
-    }
-});
-
-
-
-app.get('/products/:pid', (req, res) => {
-    const { pid } = req.params;
-    const productIdDeseado = parseInt(pid);
-
-    let producto = productManager.getProductById(productIdDeseado);
-    if (producto) {
-        res.status(200).json(producto);
-    }
-    else {
-        res.status(404).send(`El producto con ID ${productIdDeseado} no existe.`);
-    }
-});
-
-const PORT = 8080;
-app.listen(PORT, () => { console.log("server iniciado") });
-
-
-
-
