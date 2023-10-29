@@ -3,7 +3,7 @@ import express from 'express';
 import { __dirname } from './src/utils.js'
 
 import productRouter from './src/routes/products.router.js';
-
+import carritoRouter from './src/routes/carrito.router.js'
 
 
 // productManager.addProduct("Televisor", "Samsung 43 Neo", 549999, "foto_tv.jpg", "MLA19787254", 10);
@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/productos', productRouter);
+app.use('/api/carts', carritoRouter);
 
 app.get('/', (req, res) => {
     res.status(200).send('Hola!');
