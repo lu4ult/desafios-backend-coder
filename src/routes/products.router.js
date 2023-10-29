@@ -23,6 +23,8 @@ router.get('/:id', (req, res) => {
     res.status(200).json(productById);
 });
 
+
+//TODO: middleware como hace el profe en el after
 router.post('/', async (req, res) => {
     const { title, description, code, price, status = true, stock, category, thumbnails = [] } = req.body;
 

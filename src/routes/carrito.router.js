@@ -37,6 +37,8 @@ router.get('/:cid', async (req, res) => {
 router.post('/:cid/product/:pid', async (req, res) => {
     const { cid, pid } = req.params;
 
+    //TODO: verificar que el producto existe según ese ID.
+    //No hacerlo dentro de la clase carritoManager
     let response = carritoManager.update(cid, pid);
 
     console.log(response)

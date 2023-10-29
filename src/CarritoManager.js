@@ -55,6 +55,8 @@ export class CarritoManager {
     update(carritoID, productoID) {
         //Buscamos el carrito en si (según carritoID) en el array de carritos
 
+
+        //TODO: refactor utilizando el método get(carritoID);
         let indiceCarrito = this.carritos.findIndex(e => e.id === carritoID);
         if (indiceCarrito === -1) {
             return {
