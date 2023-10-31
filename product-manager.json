@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "title": "Lavarropas",
+        "description": "Lavarropas carga vertical",
+        "code": 88123,
+        "price": [],
+        "status": "MLA123456789",
+        "stock": 80,
+        "category": "Electronica",
+        "thumbnails": []
+    },
+    {
+        "id": 2,
+        "title": "TV",
+        "description": "TV 32",
+        "code": 59999,
+        "price": [],
+        "status": "MLA123456789",
+        "stock": 6,
+        "category": "Electronica",
+        "thumbnails": []
+    },
+    {
+        "id": 3,
+        "title": "TV 42",
+        "description": "TV 42 Actualizado",
+        "code": 79999,
+        "price": [],
+        "status": "MLA123456789",
+        "stock": 60,
+        "category": "Electronica",
+        "thumbnails": []
+    }
+]
