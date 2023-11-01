@@ -20,7 +20,9 @@
   },
   "homepage": "https://github.com/lu4ult/desafios-backend-coder#readme",
   "dependencies": {
-    "express": "4.18.2"
+    "express": "4.18.2",
+    "express-handlebars": "^7.1.2",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "nodemon": "3.0.1"
