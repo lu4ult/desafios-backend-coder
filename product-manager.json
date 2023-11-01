@@ -1,1 +1,46 @@
-[{"id":1,"title":"Televisor","description":"Samsung 43 Neo","price":549999,"thumbnail":"foto_tv.jpg","code":"MLA19787254","stock":10},{"id":2,"title":"Lavarropas","description":"Lavarropas Horizontal Whirlpool","price":534699,"thumbnail":"foto2.jpg","code":"MLA26951442","stock":50},{"id":3,"title":"Microondas","description":"Microondas Atma","price":72999,"thumbnail":"foto3.jpg","code":"MLA8376814","stock":5},{"id":4,"title":"Aire Acondicioando","description":"Split frio/calor","price":459999,"thumbnail":"split.jpg","code":"MLA16212559","stock":15}]
+[
+    {
+        "id": 1,
+        "title": "Lavarropas",
+        "description": "Lavarropas carga vertical",
+        "code": 88123,
+        "price": [],
+        "status": "MLA123456789",
+        "stock": 80,
+        "category": "Electronica",
+        "thumbnails": []
+    },
+    {
+        "id": 2,
+        "title": "TV",
+        "description": "TV 32",
+        "code": 59999,
+        "price": [],
+        "status": "MLA123456789",
+        "stock": 6,
+        "category": "Electronica",
+        "thumbnails": []
+    },
+    {
+        "id": 3,
+        "title": "TV 42",
+        "description": "TV 42 Actualizado",
+        "code": 79999,
+        "price": [],
+        "status": "MLA123456789",
+        "stock": 60,
+        "category": "Electronica",
+        "thumbnails": []
+    },
+    {
+        "id": 4,
+        "title": "TV",
+        "description": "Equipo fantabuloso",
+        "code": "MLA123456789",
+        "price": 50000,
+        "status": true,
+        "stock": 7,
+        "category": "Electronica",
+        "thumbnails": []
+    }
+]
