@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "25087791-5f7b-45ce-a983-c8209eea6878",
+		"name": "Coder - Segunda PreEntrega",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21084343"
+	},
+	"item": [
+		{
+			"name": "products",
+			"item": [
+				{
+					"name": "Obtener Productos Todos",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Subir Producto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TV\",\r\n    \"description\": \"Equipo fantabuloso\",\r\n    \"code\": \"MLA123456789\",\r\n    \"price\": 50000,\r\n    \"status\": true,\r\n    \"stock\": 7,\r\n    \"category\": \"Electronica\",\r\n    \"thumbnails\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar Producto",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"TV\",\r\n    \"description\": \"TV 32\",\r\n    \"code\": \"MLA123456789\",\r\n    \"price\": 59999,\r\n    \"status\": true,\r\n    \"stock\": 6,\r\n    \"category\": \"Electronica\",\r\n    \"thumbnails\": []\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/productos/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"productos",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Borrar Producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/productos/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"productos",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Leer Carritos Todos",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Carrito",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/carts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Agrega producto a carrito",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"id\": \"4\",\r\n            \"qty\": 2\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/carts/656660cdfc69414f2aee830e",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								"656660cdfc69414f2aee830e"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener carrito",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/carts/BCC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								"BCC"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

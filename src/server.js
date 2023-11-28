@@ -1,20 +1,16 @@
 import express from 'express';
-// import { ProductManager } from './src/ProductManager.js';
-import { __dirname } from './utils.js'
 import handlebars from 'express-handlebars';
+import { Server } from 'socket.io';
+
+import { __dirname } from './utils.js'
+
 import productsRouter from './routes/products.router.js';
 import chatsRouter from './routes/chat.router.js';
+import carritoRouter from './routes/carrito.router.js'
+
 import { initMongoDB } from './daos/mongodb/connection.js';
 import { errorHandler } from './middleWares/errorHandler.js';
-import { Server } from 'socket.io';
 import MessagesDaoMongo from './daos/mongodb/messages.dao.js';
-// import carritoRouter from './routes/carrito.router.js'
-
-
-// productManager.addProduct("Televisor", "Samsung 43 Neo", 549999, "foto_tv.jpg", "MLA19787254", 10);
-// productManager.addProduct("Lavarropas", "Lavarropas Horizontal Whirlpool", 534699, "foto2.jpg", "MLA26951442", 50);
-// productManager.addProduct("Microondas", "Microondas Atma", 72999, "foto3.jpg", "MLA8376814", 5);
-// productManager.addProduct("Aire Acondicioando", "Split frio/calor", 459999, "split.jpg", "MLA16212559", 15);
 
 
 const app = express();
@@ -22,15 +18,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+/****/
 app.engine('handlebars', handlebars.engine());
 app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 
 
-
+/****/
 app.use('/api/products', productsRouter);
-// app.use('/api/carts', carritoRouter);
+app.use('/api/carts', carritoRouter);
 app.use('/chat', chatsRouter);
 
 app.use(errorHandler);
@@ -58,10 +56,6 @@ io.on('connection', socket => {
     socket.on('nuevoUsuario', (user) => {
         usuarios[socket.id] = { user: user };
 
-        console.log(usuarios)
-        console.log("Nuevo usuario")
-        console.log(user)
-
         const datos = {
             user: 'server',
             message: `${user} acaba de conectarse!`,
@@ -74,7 +68,6 @@ io.on('connection', socket => {
         io.emit('messageLogs', mensajes);
     });
 
-    // console.log(socket.clientCount)
     socket.on('message', data => {
         const datos = {
             ...data,
@@ -91,7 +84,6 @@ io.on('connection', socket => {
         }
 
         if (datos.tipo === 'typing') {
-
             //En lugar de io.emit usamos socket.broadcast para que llegue a todos menos a este.
             // io.emit('typing', datos);
             socket.broadcast.emit('typing', datos);

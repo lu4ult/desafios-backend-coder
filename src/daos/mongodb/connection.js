@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-
+//TODO: mover env cuando lo veamos
 export const initMongoDB = async (esLocal) => {
     try {
         if (esLocal) {

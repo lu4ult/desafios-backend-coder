@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-export const cartsCollectionName = "cart";
+export const cartsCollectionName = "carts";
 
 
 //Acá cómo sería??
@@ -12,11 +12,10 @@ const cartSchema = new Schema({
     // stock: { type: Number, required: true },
     products: [
         {
-            //ID del producto,
-            //Cantidad de este producto
+            id: { type: String, required: true },
+            qty: { type: Number, required: true },
         }
     ]
-
 });
 
 export const CartModel = model(
