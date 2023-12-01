@@ -2,6 +2,13 @@ import * as service from "../services/cart.services.js";
 
 export const getAll = async (req, res, next) => {
     try {
+        let { limit = 8, page = 1, sort, query } = req.query;
+
+        console.log("limit", limit);
+        console.log("page", page);
+        console.log("sort", sort);
+        console.log("query", query);
+
         const response = await service.getAll();
         res.status(200).json(response);
     } catch (error) {
@@ -32,8 +39,9 @@ export const create = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
     try {
-        console.log(`ID: ${req.params}`)
         const { id } = req.params;
+
+        console.log(req.body)
         const prodUpd = await service.update(id, req.body);
         if (!prodUpd) res.status(404).json({ msg: "Error update Cart!" });
         else res.status(200).json(prodUpd);

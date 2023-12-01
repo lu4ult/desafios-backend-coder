@@ -1,22 +1,24 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 
 export const cartsCollectionName = "carts";
 
-
-//Acá cómo sería??
-
 const cartSchema = new Schema({
-    // name: { type: String, required: true },
-    // description: { type: String, required: true },
-    // price: { type: Number, required: true },
-    // stock: { type: Number, required: true },
     products: [
         {
-            id: { type: String, required: true },
-            qty: { type: Number, required: true },
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "products",
+                // default: []                              //Con esto me da error
+            },
+            quantity: { type: Number, default: 1 }
         }
+
     ]
 });
+
+cartSchema.pre("find", function () {
+    this.populate("products");
+})
 
 export const CartModel = model(
     cartsCollectionName,

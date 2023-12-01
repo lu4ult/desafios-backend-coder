@@ -33,10 +33,20 @@ export default class CartDaoMongoDB {
         console.log(`id carrito: ${id}`);
         console.log(obj)
         try {
-            const response = await CartModel.findByIdAndUpdate(id, obj, {
-                new: true,
-            });
+            const carrito = await CartModel.findById(id);
+
+
+            //Eliminamos el producto del array, para luego volver a meterlo con push() con la cantidad correcta.
+            //https://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
+            carrito.products = carrito.products.filter(producto => producto.product._id.toString() !== obj.product);
+
+            carrito.products.push(obj);
+
+            const response = await CartModel.findByIdAndUpdate(id, carrito, { new: true });
+            // // carrito.save();         //De dónde sale este save() ? Igual no me funcionó
+
             return response;
+
         } catch (error) {
             console.log(error);
         }
