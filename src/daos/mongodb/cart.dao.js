@@ -13,7 +13,11 @@ export default class CartDaoMongoDB {
 
     async getById(id) {
         try {
-            const response = await CartModel.findById(id);
+            // const response = await CartModel.findById(id).populate();
+            //Usamos findOne en lugar findById porque sino no me funcionaba el middleware para populate()
+
+            //el método populate() acá no es necesario aparentemente, funciona mientres esté el middleware, lo dejamos como recordatorio.
+            const response = await CartModel.findOne({ _id: id }).populate();
             return response;
         } catch (error) {
             console.log(error);
@@ -39,7 +43,6 @@ export default class CartDaoMongoDB {
             //Eliminamos el producto del array, para luego volver a meterlo con push() con la cantidad correcta.
             //https://stackoverflow.com/questions/11637353/comparing-mongoose-id-and-strings
             carrito.products = carrito.products.filter(producto => producto.product._id.toString() !== obj.product);
-
             carrito.products.push(obj);
 
             const response = await CartModel.findByIdAndUpdate(id, carrito, { new: true });

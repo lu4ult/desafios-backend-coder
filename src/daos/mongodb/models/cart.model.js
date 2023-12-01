@@ -16,8 +16,14 @@ const cartSchema = new Schema({
     ]
 });
 
-cartSchema.pre("find", function () {
-    this.populate("products");
+
+//No me interesa el populate al traer todos los carritos, sino en cada carrito en específico
+// cartSchema.pre("find", function () {
+//     this.populate("products.product");
+// })
+
+cartSchema.pre("findOne", function () {
+    this.populate("products.product");
 })
 
 export const CartModel = model(
