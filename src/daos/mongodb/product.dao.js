@@ -3,21 +3,15 @@ import { ProductModel } from "./models/product.model.js";
 export default class ProductDaoMongoDB {
     async getAll(limit, page, sort, query) {
         try {
-            console.log("limit", limit);
-            console.log("page", page);
-            console.log("sort", sort);
-            console.log("query", query);
-
             //Así era antes de agregar paginate()
             // const response = await ProductModel.find({});
 
-            //Primer parámetro es la query, le pasamos vacío para que traiga todos
-            console.log(sort === "true")
-            const response = await ProductModel.paginate({}, {
+            //Primer parámetro es el filtro, si le paso un objeto vacío me busca todo
+            const filtro = query ? { category: query } : {};
+            const response = await ProductModel.paginate(filtro, {
                 page,
                 limit,
                 sort: sort ? sort === 'true' ? { price: 1 } : { price: -1 } : null,
-                query,
             });
 
             //Sort puede tener tres estados:
@@ -26,7 +20,7 @@ export default class ProductDaoMongoDB {
             //false: orden descendente de precio (pasa -1)
 
             const respuestaPersonalizada = {
-                status: response ? true : false,
+                status: response.docs.length > 0 ? 'success' : 'error',
                 payload: response.docs,
                 totalPages: response.totalPage,
                 prevPage: response.prevPage,
@@ -36,7 +30,6 @@ export default class ProductDaoMongoDB {
                 hasNextPage: response.hasNextPage,
                 prevLink: response.hasPrevPage ? `midireccion.com/?page=${response.prevPage}` : null,
                 nextLink: response.hasNextPage ? `midireccion.com/?page=${response.nextPage}` : null,
-
             };
             return respuestaPersonalizada;
         } catch (error) {
