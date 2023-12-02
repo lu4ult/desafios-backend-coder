@@ -2,7 +2,9 @@ import * as service from "../services/product.services.js";
 
 export const getAll = async (req, res, next) => {
     try {
-        const response = await service.getAll();
+        const { limit = 10, page = 1, sort, query } = req.query;
+
+        const response = await service.getAll(limit, page, sort, query);
         res.status(200).json(response);
     } catch (error) {
         next(error.message);

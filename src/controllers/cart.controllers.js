@@ -41,7 +41,6 @@ export const update = async (req, res, next) => {
     try {
         const { id } = req.params;
 
-        console.log(req.body)
         const prodUpd = await service.update(id, req.body);
         if (!prodUpd) res.status(404).json({ msg: "Error update Cart!" });
         else res.status(200).json(prodUpd);
