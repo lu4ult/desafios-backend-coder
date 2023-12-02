@@ -13,7 +13,25 @@
 					"name": "Obtener Productos Todos",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products?limit=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -24,7 +42,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"TV\",\r\n    \"description\": \"Equipo fantabuloso\",\r\n    \"code\": \"MLA123456789\",\r\n    \"price\": 50000,\r\n    \"status\": true,\r\n    \"stock\": 7,\r\n    \"category\": \"Electronica\",\r\n    \"thumbnails\": []\r\n}",
+							"raw": "{\r\n    \"name\": \"Lavarropas\",\r\n    \"description\": \"Test\",\r\n    \"code\": \"MLA123456769\",\r\n    \"price\": 45000,\r\n    \"status\": true,\r\n    \"stock\": 2,\r\n    \"category\": \"Electronica\",\r\n    \"thumbnails\": []\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -32,13 +50,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/products",
+							"raw": "http://localhost:8080/api/products",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
+								"api",
 								"products"
 							]
 						}
@@ -137,7 +156,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"products\": [\r\n        {\r\n            \"id\": \"4\",\r\n            \"qty\": 2\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"product\": \"65694b54ed604217def3b93b\",\r\n    \"quantity\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -145,7 +164,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/carts/656660cdfc69414f2aee830e",
+							"raw": "http://localhost:8080/api/carts/65694c71e34c8b1a39fda792",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -154,7 +173,7 @@
 							"path": [
 								"api",
 								"carts",
-								"656660cdfc69414f2aee830e"
+								"65694c71e34c8b1a39fda792"
 							]
 						}
 					},
