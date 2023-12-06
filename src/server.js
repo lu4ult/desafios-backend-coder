@@ -8,9 +8,15 @@ import productsRouter from './routes/products.router.js';
 import chatsRouter from './routes/chat.router.js';
 import carritoRouter from './routes/carrito.router.js'
 
-import { initMongoDB } from './daos/mongodb/connection.js';
+import { connectionString, initMongoDB } from './daos/mongodb/connection.js';
 import { errorHandler } from './middleWares/errorHandler.js';
 import MessagesDaoMongo from './daos/mongodb/messages.dao.js';
+
+import cookieParser from "cookie-parser";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import userRouter from './routes/user.routes.js'
+import viewsRouter from './routes/views.router.js'
 
 
 const app = express();
@@ -25,11 +31,34 @@ app.set('view engine', 'handlebars');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 
+/****/
+
+const mongoStoreOptions = {
+    store: MongoStore.create({
+        mongoUrl: connectionString,
+        ttl: 120,
+        // crypto: {
+        //     secret: '1234'          //con esta la info de session en mongo aparece encriptada en vez de leerse el json
+        // }
+    }),
+    secret: "1234",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 120000,
+    },
+};
+app.use(cookieParser());
+app.use(session(mongoStoreOptions));
+
 
 /****/
 app.use('/api/products', productsRouter);
 app.use('/api/carts', carritoRouter);
 app.use('/chat', chatsRouter);
+
+app.use("/api/users", userRouter);
+app.use("/views", viewsRouter)
 
 app.use(errorHandler);
 
@@ -38,7 +67,7 @@ app.get('/', (req, res) => {
 });
 
 
-await initMongoDB(false);           //True para local, false para Atlas
+await initMongoDB();
 
 // console.log(__dirname)
 const PORT = 8080;
