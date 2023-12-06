@@ -36,4 +36,17 @@ export default class UserServices {
             console.log(error);
         }
     }
+
+    async logout(email, password) {
+        try {
+
+            console.log('body', email, password);
+            const userExist = await UserModel.findOne({ email, password });
+            console.log('login::', userExist);
+            if (!userExist) return false;
+            else return userExist;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
