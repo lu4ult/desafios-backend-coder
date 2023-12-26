@@ -1,7 +1,4 @@
-<h1>Perfil</h1>
-
-<h4>{{user}}</h4>
-
-
-
-<button onclick="location.href='/api/users/logout'">Cerrar sesión</button>
+<h1>User Profile</h1>
+<p>Welcome, {{user.first_name}}!</p>
+<img src="{{user.image}}" alt="User Avatar" />
+<a href="/users/logout">Logout</a>

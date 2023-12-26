@@ -1,11 +1,33 @@
-import { Router } from "express";
-import UserController from "../controllers/user.controllers.js";
-const controller = new UserController();
+import { Router } from 'express'
+import passport from 'passport';
+import { registerResponse, loginResponse, githubResponse } from '../controllers/user.controller.js';
 
-const router = Router();
+const router = Router()
 
-router.post("/register", controller.register);
-router.post("/login", controller.login);
-router.get("/logout", controller.logout)
+router.post('/register', passport.authenticate('register'), registerResponse);
+
+router.post('/login', passport.authenticate('login'), loginResponse);
+
+/* ------------------------------------ - ----------------------------------- */
+
+router.get('/register-github', passport.authenticate('github', { scope: ['user:email'] }))
+
+//callbackURL --> es la ruta a la que redirecciona github
+router.get('/github', passport.authenticate('github', {
+    failureRedirect: '/views',
+    successRedirect: '/views/profile',
+    passReqToCallback: true
+}));
+
+router.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error('Error al cerrar sesión:', err);
+            return res.send(err);
+        }
+        // res.redirect('/login'); // Redirige a la página de inicio u otra ubicación después del logout exitoso
+        res.redirect('/views');
+    });
+});
 
 export default router;

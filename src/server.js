@@ -18,6 +18,8 @@ import MongoStore from "connect-mongo";
 import userRouter from './routes/user.routes.js'
 import viewsRouter from './routes/views.router.js'
 
+import passport from "passport";
+import "./passport/github.js";
 
 const app = express();
 
@@ -57,7 +59,13 @@ app.use('/api/products', productsRouter);
 app.use('/api/carts', carritoRouter);
 app.use('/chat', chatsRouter);
 
-app.use("/api/users", userRouter);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+app.use("/users", userRouter);
 app.use("/views", viewsRouter)
 
 app.use(errorHandler);

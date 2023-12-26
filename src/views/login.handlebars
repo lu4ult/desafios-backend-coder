@@ -1,11 +1,14 @@
 <h1>LOGIN</h1>
-<form action="/api/users/login" method="post">
+{{!-- <form action="/api/users/login" method="post">
   Email:
   <input type="email" name="email" id="email" />
   Password:
   <input type="password" name="password" id="password" />
   <input type="submit" value="LOGIN" />
-</form>
+</form> --}}
 
 <h2>¿USUARIO NUEVO?</h2>
-<button onclick="location.href='/views/register'">Ir a registro</button>
+{{!-- <button onclick="location.href='/views/register'">Ir a registro</button> --}}
+
+<a href="/users/register-github">Login with GitHub</a>
+{{!-- <a href="/users/register">Login with GitHub</a> --}}
