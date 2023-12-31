@@ -2,9 +2,10 @@ import { Strategy as GithubStrategy } from "passport-github2";
 import passport from "passport";
 import UserDao from "../daos/user.dao.js";
 const userDao = new UserDao();
-
+import "dotenv/config";
 
 const strategyOptions = {
+  // process.env.GITHUB_CLIENTID
   clientID: "Iv1.8deb3f1d353b54ee",
   clientSecret: "743e932ae7f057579fe656dc441acefb2f33f207",
   callbackURL: "http://localhost:8080/users/github",

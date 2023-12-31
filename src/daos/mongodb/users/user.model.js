@@ -7,7 +7,6 @@ const userSchema = new Schema({
   },
   last_name: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
@@ -16,16 +15,25 @@ const userSchema = new Schema({
   },
   age: {
     type: Number,
-    required: true,
   },
   password: {
     type: String,
-    required: true,
   },
   role: {
     type: String,
     default: "user",
   },
+  image: {
+    type: String,
+  },
+  isGithub: {
+    type: Boolean,
+    default: false,
+  },
+  isGoogle: {
+    type: Boolean,
+    default: false,
+  },
 });
-
-export const UserModel = model("users", userSchema);
+const userColl = "users";
+export const UserModel = model(userColl, userSchema);

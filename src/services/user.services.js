@@ -1,52 +1,38 @@
-// import { UserModel } from "../models/user.model.js";
+import Services from "./class.services.js";
+import UserMongoDao from "../daos/mongodb/users/user.dao.js";
+const userDao = new UserMongoDao();
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
-import { UserModel } from "../daos/mongodb/models/user.model.js";
+const SECRET_KEY_JWT = process.env.SECRET_KEY_JWT;
 
-export default class UserServices {
-    async findByEmail(email) {
-        return await UserModel.findOne({ email });
+export default class UserService extends Services {
+  constructor() {
+    super(userDao);
+  }
+
+  #generateToken(user) {
+    const payload = {
+      userId: user._id,
+    };
+    return jwt.sign(payload, SECRET_KEY_JWT, { expiresIn: "10m" });
+  }
+
+  async register(user) {
+    try {
+      return await userDao.register(user);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
-    async register(user) {
-        try {
-            const { email, password } = user;
-            console.log(email)
-            console.log(password)
-            if (email === 'adminCoder@coder.com' && password === 'adminCoder123') {
-                return await UserModel.create({ ...user, role: 'admin' });
-            }
-            const exists = await this.findByEmail(email);
-            console.log(exists);
-            if (!exists) return await UserModel.create(user);
-            else return false;
-        } catch (error) {
-            console.log(error);
-        }
+  async login(user) {
+    try {
+      const userExist = await userDao.login(user);
+      if(userExist) return this.#generateToken(userExist);
+      else return false;
+    } catch (error) {
+      console.log(error);
     }
-
-    async login(email, password) {
-        try {
-
-            console.log('body', email, password);
-            const userExist = await UserModel.findOne({ email, password });
-            console.log('login::', userExist);
-            if (!userExist) return false;
-            else return userExist;
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async logout(email, password) {
-        try {
-
-            console.log('body', email, password);
-            const userExist = await UserModel.findOne({ email, password });
-            console.log('login::', userExist);
-            if (!userExist) return false;
-            else return userExist;
-        } catch (error) {
-            console.log(error);
-        }
-    }
+  }
 }

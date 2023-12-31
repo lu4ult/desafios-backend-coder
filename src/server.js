@@ -1,25 +1,27 @@
 import express from 'express';
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
+import 'dotenv/config';
 
 import { __dirname } from './utils.js'
 
-import productsRouter from './routes/products.router.js';
-import chatsRouter from './routes/chat.router.js';
-import carritoRouter from './routes/carrito.router.js'
+// import productsRouter from './routes/products.router.js';
+// import chatsRouter from './routes/chat.router.js';
+// import carritoRouter from './routes/carrito.router.js'
 
-import { connectionString, initMongoDB } from './daos/mongodb/connection.js';
 import { errorHandler } from './middleWares/errorHandler.js';
-import MessagesDaoMongo from './daos/mongodb/messages.dao.js';
+// import MessagesDaoMongo from './daos/mongodb/messages.dao.js';
 
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-import userRouter from './routes/user.routes.js'
-import viewsRouter from './routes/views.router.js'
+// import userRouter from './routes/user.routes.js'
+// import viewsRouter from './routes/views.router.js'
 
 import passport from "passport";
-import "./passport/github.js";
+// import "./passport/github.js";
+import { connectionString, initMongoDB } from './config/connection.js';
+import MainRouter from './routes/index.js';
 
 const app = express();
 
@@ -55,9 +57,12 @@ app.use(session(mongoStoreOptions));
 
 
 /****/
-app.use('/api/products', productsRouter);
-app.use('/api/carts', carritoRouter);
-app.use('/chat', chatsRouter);
+const mainRouter = new MainRouter();
+app.use('/api', mainRouter.getRouter());
+
+// app.use('/api/products', productsRouter);
+// app.use('/api/carts', carritoRouter);
+// app.use('/chat', chatsRouter);
 
 
 app.use(passport.initialize());
@@ -65,8 +70,8 @@ app.use(passport.session());
 
 
 
-app.use("/users", userRouter);
-app.use("/views", viewsRouter)
+// app.use("/users", userRouter);
+// app.use("/views", viewsRouter)
 
 app.use(errorHandler);
 
@@ -74,16 +79,21 @@ app.get('/', (req, res) => {
     res.status(200).send('Hola!');
 });
 
+app.get('*', (req, res) => {
+    res.status(404).render('404');
+})
 
+
+// await initMongoDB();
 await initMongoDB();
 
 // console.log(__dirname)
-const PORT = 8080;
-const httpServer = app.listen(PORT, () => { console.log("Server iniciado") });
+
+const httpServer = app.listen(process.env.PORT || 8080, () => { console.log("Server iniciado") });
 
 
 const io = new Server(httpServer);
-const messagesDao = new MessagesDaoMongo();
+// const messagesDao = new MessagesDaoMongo();
 let usuarios = {};
 let mensajes = [];
 
@@ -115,7 +125,7 @@ io.on('connection', socket => {
 
         if (datos.tipo === 'send') {
             //Cuando envían un nuevo chat lo logueamos en Mongo
-            messagesDao.create(datos);
+            // messagesDao.create(datos);
             mensajes.push(datos)
             io.emit('messageLogs', mensajes);
         }
