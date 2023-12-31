@@ -11,11 +11,6 @@ git clone https://github.com/lu4ult/desafios-backend-coder.git
 cd desafios-backend-coder
 ```
 
-Ir a la branch "entregas":
-```
-git checkout entregas
-```
-
 ```
 npm install
 ```
