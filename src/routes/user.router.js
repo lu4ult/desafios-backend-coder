@@ -1,5 +1,4 @@
 import { Router } from "express";
-// import { verifyToken } from "../middlewares/verifyToken.js";
 import UserController from "../controllers/user.controllers.js";
 import { verifyToken } from "../middleWares/verifyToken.js";
 const controller = new UserController();

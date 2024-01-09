@@ -15,4 +15,7 @@ export const productSchema = new Schema({
   ]
 });
 
-export const ProductModel = model(productsCollection, productSchema);
+export const ProductModel = model(
+  productsCollection,
+  productSchema
+);

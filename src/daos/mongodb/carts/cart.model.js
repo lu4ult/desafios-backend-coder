@@ -2,7 +2,7 @@ import mongoose, { Schema, model } from "mongoose";
 
 export const cartsCollectionName = "carts";
 
-const cartSchema = new Schema({
+export const cartSchema = new Schema({
     products: [
         {
             product: {

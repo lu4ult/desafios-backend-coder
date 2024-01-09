@@ -5,9 +5,6 @@ import 'dotenv/config';
 
 import { __dirname } from './utils.js'
 
-// import productsRouter from './routes/products.router.js';
-// import chatsRouter from './routes/chat.router.js';
-// import carritoRouter from './routes/carrito.router.js'
 
 import { errorHandler } from './middleWares/errorHandler.js';
 // import MessagesDaoMongo from './daos/mongodb/messages.dao.js';
@@ -15,8 +12,6 @@ import { errorHandler } from './middleWares/errorHandler.js';
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from "connect-mongo";
-// import userRouter from './routes/user.routes.js'
-// import viewsRouter from './routes/views.router.js'
 
 import passport from "passport";
 // import "./passport/github.js";
@@ -56,22 +51,13 @@ app.use(cookieParser());
 app.use(session(mongoStoreOptions));
 
 
-/****/
+
 const mainRouter = new MainRouter();
 app.use('/api', mainRouter.getRouter());
-
-// app.use('/api/products', productsRouter);
-// app.use('/api/carts', carritoRouter);
-// app.use('/chat', chatsRouter);
 
 
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
-// app.use("/users", userRouter);
-// app.use("/views", viewsRouter)
 
 app.use(errorHandler);
 
@@ -83,17 +69,13 @@ app.get('*', (req, res) => {
     res.status(404).render('404');
 })
 
-
-// await initMongoDB();
 await initMongoDB();
 
-// console.log(__dirname)
 
 const httpServer = app.listen(process.env.PORT || 8080, () => { console.log("Server iniciado") });
 
-
 const io = new Server(httpServer);
-// const messagesDao = new MessagesDaoMongo();
+
 let usuarios = {};
 let mensajes = [];
 
